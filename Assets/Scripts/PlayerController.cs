@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,12 +15,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D body;
     private float elapsedTime = 0f;
-    
+    private Text scoreLabel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        CreateScoreDisplay();
     }
 
     // Update is called once per frame
@@ -49,7 +51,36 @@ public class PlayerController : MonoBehaviour
 
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        Debug.Log("Score: " + score);
+        if (scoreLabel != null)
+        {
+            scoreLabel.text = "Score: " + score;
+        }
+    }
+
+    private void CreateScoreDisplay()
+    {
+        GameObject canvasObject = new GameObject("Score Canvas");
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasObject.AddComponent<CanvasScaler>();
+        canvasObject.AddComponent<GraphicRaycaster>();
+
+        GameObject labelObject = new GameObject("Score");
+        labelObject.transform.SetParent(canvasObject.transform, false);
+
+        scoreLabel = labelObject.AddComponent<Text>();
+        scoreLabel.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        scoreLabel.fontSize = 32;
+        scoreLabel.color = Color.white;
+        scoreLabel.alignment = TextAnchor.UpperCenter;
+        scoreLabel.text = "Score: " + score;
+
+        RectTransform labelTransform = scoreLabel.rectTransform;
+        labelTransform.anchorMin = new Vector2(0.5f, 1f);
+        labelTransform.anchorMax = new Vector2(0.5f, 1f);
+        labelTransform.pivot = new Vector2(0.5f, 1f);
+        labelTransform.anchoredPosition = new Vector2(0f, -20f);
+        labelTransform.sizeDelta = new Vector2(300f, 50f);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
