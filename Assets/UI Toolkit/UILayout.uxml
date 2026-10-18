@@ -1,4 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" authoring-id="890703421">
-    <Style src="project://database/Assets/UI/UILayout.uss?fileID=7433441132597879392&amp;guid=c9c53abab6b71f14f9d4841ccd1426c4&amp;type=3#UILayout"/>
-    <ui:Label text="Score: 0" name="scoreLabel" double-click-selects-word="true" style="display: flex; -unity-font-style: bold;"/>
-</ui:UXML>

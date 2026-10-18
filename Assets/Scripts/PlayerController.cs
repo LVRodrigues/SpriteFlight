@@ -1,7 +1,4 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -12,53 +9,46 @@ public class PlayerController : MonoBehaviour
     public GameObject boosterFlame;
     public float scoreMultiplier = 10f;
     public int score = 0;
+    public GameObject explosion;
 
     private Rigidbody2D body;
     private float elapsedTime = 0f;
     private Text scoreLabel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    void Start() {
         body = GetComponent<Rigidbody2D>();
-        CreateScoreDisplay();
+        // CreateScoreDisplay();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Mouse.current.leftButton.isPressed)
-        {
+    void Update() {
+        if (Mouse.current.leftButton.isPressed) {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             Vector2 direction = (mousePosition - transform.position).normalized;
 
             transform.up = direction;
             body.AddForce(direction * trustForce);
 
-            if (body.linearVelocity.magnitude > maxSpeed)
-            {
+            if (body.linearVelocity.magnitude > maxSpeed) {
                 body.linearVelocity = body.linearVelocity.normalized * maxSpeed;
             }
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
+        if (Mouse.current.leftButton.wasPressedThisFrame) {
             boosterFlame.SetActive(true);
-        } else if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
+        } else if (Mouse.current.leftButton.wasReleasedThisFrame) {
             boosterFlame.SetActive(false);
         }
 
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        if (scoreLabel != null)
-        {
+        if (scoreLabel != null) {
             scoreLabel.text = "Score: " + score;
         }
     }
 
-    private void CreateScoreDisplay()
-    {
+    private void CreateScoreDisplay() {
         GameObject canvasObject = new GameObject("Score Canvas");
         Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -83,8 +73,8 @@ public class PlayerController : MonoBehaviour
         labelTransform.sizeDelta = new Vector2(300f, 50f);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
+    void OnCollisionEnter2D(Collision2D collision) {
         Destroy(gameObject);
+        Instantiate(explosion, transform.position, transform.rotation);
     }
 }
