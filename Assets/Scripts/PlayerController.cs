@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body;
     private float elapsedTime = 0f;
     private Label scoreLabel;
+    private Button restartButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +28,9 @@ public class PlayerController : MonoBehaviour
     private void OnUIReload(PanelRenderer renderer, VisualElement root, int version)
     {
         scoreLabel = root.Q<Label>("scoreLabel");
+        restartButton = root.Q<Button>("restartButton");
+        restartButton.style.display = DisplayStyle.None;
+        restartButton.clicked += ReloadScene;
         UpdateScoreLabel();
     }
 
@@ -94,5 +99,11 @@ public class PlayerController : MonoBehaviour
     {
         Destroy(gameObject);
         Instantiate(explosion, transform.position, transform.rotation);
+        restartButton.style.display = DisplayStyle.Flex;
+    }
+
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

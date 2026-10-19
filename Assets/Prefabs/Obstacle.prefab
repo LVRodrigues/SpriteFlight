@@ -191,3 +191,5 @@ MonoBehaviour:
   maxSize: 3
   minSpeed: 10
   maxSpeed: 350
+  spin: 10
+  bounceEffect: {fileID: 6203751385445348233, guid: f39019c25934f964da248e24a954c193, type: 3}
